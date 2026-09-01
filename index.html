@@ -254,6 +254,7 @@ body {
 
   v.onload = function() {
     let userId = '';
+    let utmCampaign;
 
     try {
       const params = new URLSearchParams(window.location.search);
@@ -268,9 +269,26 @@ body {
         userId = 'user_' + Date.now() + '_' + Math.random().toString(36).slice(2, 10);
         localStorage.setItem(STORAGE_KEY, userId);
       }
+
+      const SUPPORTED_CAMPAIGNS = new Set([
+        'qr_home_value',
+        'qr_cash_offer',
+        'door_hanger_home_value',
+        'door_hanger_cash_offer',
+        'mailer_home_value',
+        'mailer_cash_offer',
+      ]);
+      const campaignValue = (params.get('utm_campaign') || '').trim();
+      if (campaignValue && SUPPORTED_CAMPAIGNS.has(campaignValue)) {
+        utmCampaign = campaignValue;
+      }
     } catch (e) {
       userId = 'user_' + Date.now() + '_' + Math.random().toString(36).slice(2, 10);
     }
+
+    const launchPayload = {
+      ...(utmCampaign ? { utm_campaign: utmCampaign } : {}),
+    };
 
     window.voiceflow.chat.load({
       verify:    { projectID: PROJECT_ID },
@@ -283,7 +301,7 @@ body {
       },
       autostart: true,
       launch: {
-        event: { type: 'launch', payload: {} }
+        event: { type: 'launch', payload: launchPayload }
       },
       assistant: {
         title:       'Bucks County Home Advisor',
