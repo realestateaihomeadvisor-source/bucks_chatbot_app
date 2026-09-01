@@ -5,7 +5,7 @@ Standalone Voiceflow chatbot page for deploy on a subdomain (e.g. `chat.yourdoma
 ## What’s included
 
 - `index.html` — full-viewport, mobile-responsive chat only
-- Same Voiceflow project as the main site (`6a5e538a8fc5be81b40d77d5`)
+- Same Voiceflow project as the main site (`6a97385ba2e6e60fee4143bd`)
 - Session reset via `userID` + optional `?resetChat=1`
 - Legal disclaimer under the chat
 
